@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  telegram-bot:
+    build: .
+    container_name: telegram-scheduler-bot
+    restart: unless-stopped
+    environment:
+      - TELEGRAM_BOT_TOKEN=${TELEGRAM_BOT_TOKEN}
+      - DATABASE_URL=${DATABASE_URL}
+      - USUARIO_AUTORIZADO_ID=${USUARIO_AUTORIZADO_ID}
+      - GMAIL_EMAIL=${GMAIL_EMAIL}
+      - GMAIL_APP_PASSWORD=${GMAIL_APP_PASSWORD}
+      - OPENWEATHER_API_KEY=${OPENWEATHER_API_KEY}
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/app/data
+    depends_on:
+      - postgres
+    networks:
+      - telegram-bot-network
+
+  postgres:
+    image: postgres:15-alpine
+    container_name: telegram-bot-postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_DB=${PGDATABASE}
+      - POSTGRES_USER=${PGUSER}
+      - POSTGRES_PASSWORD=${PGPASSWORD}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - telegram-bot-network
+
+volumes:
+  postgres_data:
+
+networks:
+  telegram-bot-network:
+    driver: bridge
