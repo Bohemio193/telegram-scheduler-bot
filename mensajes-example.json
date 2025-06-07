@@ -1,1 +1,10 @@
-
+{
+    "programados": [],
+    "repetitivos": [],
+    "usuarios_autorizados": [],
+    "configuracion": {
+        "timezone": "Europe/Madrid",
+        "formato_hora": "24h",
+        "idioma": "es"
+    }
+}
